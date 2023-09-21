@@ -346,6 +346,7 @@ static void qoi_write_32(unsigned char *bytes, int *p, unsigned int v) {
 	bytes[(*p)++] = (0x000000ff & v);
 }
 
+//Don't run this function because the xcode linker really does not like it and I haven't been able to figure out why
 static unsigned int qoi_read_32(const unsigned char *bytes, int *p) {
 	unsigned int a = bytes[(*p)++];
 	unsigned int b = bytes[(*p)++];
@@ -519,11 +520,38 @@ void *qoi_decode(const void *data, int size, qoi_desc *desc, int channels) {
 
 	bytes = (const unsigned char *)data;
 
-	header_magic = qoi_read_32(bytes, &p);
-	desc->width = qoi_read_32(bytes, &p);
-	desc->height = qoi_read_32(bytes, &p);
-	desc->channels = bytes[p++];
-	desc->colorspace = bytes[p++];
+	//Don't call qoi_write_32 because the xcode linker does not like it for some reason
+	//Instead just copy in the function's code here as a messy workaround because I can't find a better solution
+	//header_magic = qoi_read_32(bytes, &p);
+	unsigned int tempA = bytes[p++];
+	unsigned int tempB = bytes[p++];
+	unsigned int tempC = bytes[p++];
+	unsigned int tempD = bytes[p++];
+	header_magic = (tempA << 24 | tempB << 16 | tempC << 8 | tempD);
+	//desc->width = qoi_read_32(bytes, &p);
+	tempA = bytes[p++];
+	tempB = bytes[p++];
+	tempC = bytes[p++];
+	tempD = bytes[p++];
+	desc->width = (tempA << 24 | tempB << 16 | tempC << 8 | tempD);
+	//desc->height = qoi_read_32(bytes, &p);
+	tempA = bytes[p++];
+	tempB = bytes[p++];
+	tempC = bytes[p++];
+	tempD = bytes[p++];
+	desc->height = (tempA << 24 | tempB << 16 | tempC << 8 | tempD);
+	//desc->channels = bytes[p++];
+	tempA = bytes[p++];
+	tempB = bytes[p++];
+	tempC = bytes[p++];
+	tempD = bytes[p++];
+	desc->channels = (tempA << 24 | tempB << 16 | tempC << 8 | tempD);
+	//desc->colorspace = bytes[p++];
+	tempA = bytes[p++];
+	tempB = bytes[p++];
+	tempC = bytes[p++];
+	tempD = bytes[p++];
+	desc->colorspace = (tempA << 24 | tempB << 16 | tempC << 8 | tempD);
 
 	if (
 		desc->width == 0 || desc->height == 0 ||
