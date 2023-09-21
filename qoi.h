@@ -540,18 +540,8 @@ void *qoi_decode(const void *data, int size, qoi_desc *desc, int channels) {
 	tempC = bytes[p++];
 	tempD = bytes[p++];
 	desc->height = (tempA << 24 | tempB << 16 | tempC << 8 | tempD);
-	//desc->channels = bytes[p++];
-	tempA = bytes[p++];
-	tempB = bytes[p++];
-	tempC = bytes[p++];
-	tempD = bytes[p++];
-	desc->channels = (tempA << 24 | tempB << 16 | tempC << 8 | tempD);
-	//desc->colorspace = bytes[p++];
-	tempA = bytes[p++];
-	tempB = bytes[p++];
-	tempC = bytes[p++];
-	tempD = bytes[p++];
-	desc->colorspace = (tempA << 24 | tempB << 16 | tempC << 8 | tempD);
+	desc->channels = bytes[p++];
+	desc->colorspace = bytes[p++];
 
 	if (
 		desc->width == 0 || desc->height == 0 ||
