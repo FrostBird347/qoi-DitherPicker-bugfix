@@ -390,15 +390,15 @@ void *qoi_encode(const void *data, const qoi_desc *desc, int *out_len) {
 	bytes[p++] = (0x0000ff00 & QOI_MAGIC) >> 8;
 	bytes[p++] = (0x000000ff & QOI_MAGIC);
 	//qoi_write_32(bytes, &p, desc->width);
-	bytes[p++] = (0xff000000 & desc->width)) >> 24;
-	bytes[p++] = (0x00ff0000 & desc->width)) >> 16;
-	bytes[p++] = (0x0000ff00 & desc->width)) >> 8;
-	bytes[p++] = (0x000000ff & desc->width));
+	bytes[p++] = (0xff000000 & desc->width) >> 24;
+	bytes[p++] = (0x00ff0000 & desc->width) >> 16;
+	bytes[p++] = (0x0000ff00 & desc->width) >> 8;
+	bytes[p++] = (0x000000ff & desc->width);
 	//qoi_write_32(bytes, &p, desc->height);
-	bytes[p++] = (0xff000000 & desc->height)) >> 24;
-	bytes[p++] = (0x00ff0000 & desc->height)) >> 16;
-	bytes[p++] = (0x0000ff00 & desc->height)) >> 8;
-	bytes[p++] = (0x000000ff & desc->height));
+	bytes[p++] = (0xff000000 & desc->height) >> 24;
+	bytes[p++] = (0x00ff0000 & desc->height) >> 16;
+	bytes[p++] = (0x0000ff00 & desc->height) >> 8;
+	bytes[p++] = (0x000000ff & desc->height);
 	bytes[p++] = desc->channels;
 	bytes[p++] = desc->colorspace;
 
