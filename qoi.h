@@ -338,13 +338,12 @@ typedef union {
 
 static const unsigned char qoi_padding[8] = {0,0,0,0,0,0,0,1};
 
-/*Don't run this function because the xcode linker really does not like it and I haven't been able to figure out why
 static void qoi_write_32(unsigned char *bytes, int *p, unsigned int v) {
 	bytes[(*p)++] = (0xff000000 & v) >> 24;
 	bytes[(*p)++] = (0x00ff0000 & v) >> 16;
 	bytes[(*p)++] = (0x0000ff00 & v) >> 8;
 	bytes[(*p)++] = (0x000000ff & v);
-}*/
+}
 
 static unsigned int qoi_read_32(const unsigned char *bytes, int *p) {
 	unsigned int a = bytes[(*p)++];
@@ -381,24 +380,10 @@ void *qoi_encode(const void *data, const qoi_desc *desc, int *out_len) {
 	if (!bytes) {
 		return NULL;
 	}
-	
-	//Don't call qoi_write_32 because the xcode linker does not like it for some reason
-	//Instead just copy in the function's code here as a messy workaround because I can't find a better solution
-	//qoi_write_32(bytes, &p, QOI_MAGIC);
-	bytes[p++] = (0xff000000 & QOI_MAGIC) >> 24;
-	bytes[p++] = (0x00ff0000 & QOI_MAGIC) >> 16;
-	bytes[p++] = (0x0000ff00 & QOI_MAGIC) >> 8;
-	bytes[p++] = (0x000000ff & QOI_MAGIC);
-	//qoi_write_32(bytes, &p, desc->width);
-	bytes[p++] = (0xff000000 & desc->width)) >> 24;
-	bytes[p++] = (0x00ff0000 & desc->width)) >> 16;
-	bytes[p++] = (0x0000ff00 & desc->width)) >> 8;
-	bytes[p++] = (0x000000ff & desc->width));
-	//qoi_write_32(bytes, &p, desc->height);
-	bytes[p++] = (0xff000000 & desc->height)) >> 24;
-	bytes[p++] = (0x00ff0000 & desc->height)) >> 16;
-	bytes[p++] = (0x0000ff00 & desc->height)) >> 8;
-	bytes[p++] = (0x000000ff & desc->height));
+
+	qoi_write_32(bytes, &p, QOI_MAGIC);
+	qoi_write_32(bytes, &p, desc->width);
+	qoi_write_32(bytes, &p, desc->height);
 	bytes[p++] = desc->channels;
 	bytes[p++] = desc->colorspace;
 
