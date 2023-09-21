@@ -401,8 +401,8 @@ void *qoi_encode(const void *data, const qoi_desc *desc, int *out_len) {
 	bytes[p++] = (0x000000ff & desc->height);
 	bytes[p++] = desc->channels;
 	bytes[p++] = desc->colorspace;
-
-
+	
+	
 	pixels = (const unsigned char *)data;
 
 	QOI_ZEROARR(index);
